@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misty's Cakes — Practice Tests</title>
+    <style>
+        :root {
+            --pink: #e91e8c;
+            --pink-light: #fce4f3;
+            --pink-dark: #b8156e;
+            --green: #2e7d32;
+            --green-light: #e8f5e9;
+            --red: #c62828;
+            --red-light: #ffebee;
+            --gray: #f5f5f5;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gray);
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+            color: white;
+            text-align: center;
+            padding: 1.5rem 1rem;
+            box-shadow: var(--shadow);
+        }
+        header h1 { font-size: 1.6rem; margin-bottom: 0.25rem; }
+        header p { font-size: 0.9rem; opacity: 0.9; }
+
+        .tabs {
+            display: flex;
+            background: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 0.85rem 0.5rem;
+            border: none;
+            background: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #888;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            color: var(--pink);
+            border-bottom-color: var(--pink);
+            background: var(--pink-light);
+        }
+        .tab-content { display: none; padding: 1rem; max-width: 700px; margin: 0 auto; }
+        .tab-content.active { display: block; }
+
+        .quiz-info {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        .quiz-info h2 { font-size: 1.2rem; color: var(--pink-dark); margin-bottom: 0.5rem; }
+        .quiz-info p { font-size: 0.85rem; color: #666; }
+        .badge {
+            display: inline-block;
+            background: var(--pink-light);
+            color: var(--pink-dark);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 0.75rem;
+            box-shadow: var(--shadow);
+            transition: border-left 0.3s;
+            border-left: 4px solid transparent;
+        }
+        .question-card.correct { border-left-color: var(--green); }
+        .question-card.incorrect { border-left-color: var(--red); }
+
+        .q-number {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--pink);
+            margin-bottom: 0.4rem;
+        }
+        .q-text { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem; }
+
+        .options { list-style: none; }
+        .options li {
+            padding: 0.65rem 0.85rem;
+            margin-bottom: 0.4rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .options li:hover { border-color: var(--pink); background: var(--pink-light); }
+        .options li.selected { border-color: var(--pink); background: var(--pink-light); font-weight: 600; }
+        .options li.correct-answer { border-color: var(--green); background: var(--green-light); }
+        .options li.wrong-answer { border-color: var(--red); background: var(--red-light); }
+        .options li.disabled { pointer-events: none; }
+
+        .explanation {
+            display: none;
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #555;
+            border-left: 3px solid var(--pink);
+        }
+        .explanation.show { display: block; }
+
+        .progress-bar-container {
+            background: #e0e0e0;
+            border-radius: 20px;
+            height: 8px;
+            margin: 0.75rem 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pink), var(--pink-dark));
+            border-radius: 20px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        .score-section {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+        }
+        .score-section.show { display: block; }
+        .score-big {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+        }
+        .score-big.pass { color: var(--green); }
+        .score-big.fail { color: var(--red); }
+        .score-label { font-size: 1rem; color: #666; }
+        .score-message {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: var(--shadow);
+        }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(233,30,140,0.3); }
+        .btn:active { transform: translateY(0); }
+        .btn-outline {
+            background: white;
+            color: var(--pink);
+            border: 2px solid var(--pink);
+        }
+
+        .sticky-submit {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 0.75rem;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+            display: none;
+        }
+        .sticky-submit .btn { margin: 0; width: 100%; max-width: 400px; }
+        .sticky-submit .progress-text { font-size: 0.8rem; color: #888; margin-bottom: 0.4rem; }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem 5rem;
+            color: #aaa;
+            font-size: 0.8rem;
+        }
+
+        @media (min-width: 600px) {
+            .tab-btn { font-size: 0.95rem; }
+            header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🧁 Misty's Cakes</h1>
+        <p>Practice Tests for Food Safety &amp; NJ Cottage Food Law</p>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('servsafe')">ServSafe Food Handler</button>
+        <button class="tab-btn" onclick="switchTab('njlaw')">NJ Cottage Food Law</button>
+    </div>
+
+    <!-- ==================== SERVSAFE TAB ==================== -->
+    <div id="tab-servsafe" class="tab-content active">
+        <div class="quiz-info">
+            <h2>ServSafe Food Handler Practice Test</h2>
+            <p>40 multiple-choice questions — just like the real exam.<br>You need <strong>75% (30 out of 40)</strong> to pass.</p>
+            <div class="progress-bar-container"><div class="progress-bar" id="progress-servsafe"></div></div>
+            <span class="badge" id="answered-servsafe">0 / 40 answered</span>
+        </div>
+        <div class="score-section" id="score-servsafe"></div>
+        <div id="questions-servsafe"></div>
+    </div>
+
+    <!-- ==================== NJ LAW TAB ==================== -->
+    <div id="tab-njlaw" class="tab-content">
+        <div class="quiz-info">
+            <h2>NJ Cottage Food Law Practice Test</h2>
+            <p>20 questions covering New Jersey's cottage food regulations,<br>labeling, sales rules, and permit requirements.</p>
+            <div class="progress-bar-container"><div class="progress-bar" id="progress-njlaw"></div></div>
+            <span class="badge" id="answered-njlaw">0 / 20 answered</span>
+        </div>
+        <div class="score-section" id="score-njlaw"></div>
+        <div id="questions-njlaw"></div>
+    </div>
+
+    <div class="sticky-submit" id="sticky-servsafe">
+        <div class="progress-text" id="sticky-text-servsafe">Answer all 40 questions to submit</div>
+        <button class="btn" id="submit-servsafe" onclick="submitQuiz('servsafe')" disabled>Submit Test</button>
+    </div>
+    <div class="sticky-submit" id="sticky-njlaw" style="display:none;">
+        <div class="progress-text" id="sticky-text-njlaw">Answer all 20 questions to submit</div>
+        <button class="btn" id="submit-njlaw" onclick="submitQuiz('njlaw')" disabled>Submit Test</button>
+    </div>
+
+    <footer>Made with love for Misty's Cakes 🧁<br>Good luck on your exam!</footer>
+
+<script>
+// ============================================================
+// SERVSAFE FOOD HANDLER QUESTIONS (40)
+// ============================================================
+const servsafeQuestions = [
+    // --- BASIC FOOD SAFETY (8 questions) ---
+    {
+        q: "What is a foodborne illness?",
+        opts: ["An illness caused by contaminated food or beverages", "A food allergy reaction", "A disease spread by airborne particles", "An illness caused by undercooked meat only"],
+        ans: 0,
+        exp: "A foodborne illness is any illness that results from eating contaminated food or drinking contaminated beverages. It can be caused by bacteria, viruses, parasites, or chemical contaminants."
+    },
+    {
+        q: "Which of the following is a biological hazard in food?",
+        opts: ["Glass shards", "Bacteria such as Salmonella", "Cleaning chemicals", "Metal fragments"],
+        ans: 1,
+        exp: "Biological hazards include bacteria (Salmonella, E. coli, Listeria), viruses (Norovirus, Hepatitis A), parasites, and fungi. Physical hazards include glass and metal; chemical hazards include cleaning products."
+    },
+    {
+        q: "What does TCS stand for in food safety?",
+        opts: ["Temperature Controlled Storage", "Time/Temperature Control for Safety", "Thermal Cooking Standards", "Total Contamination System"],
+        ans: 1,
+        exp: "TCS stands for Time/Temperature Control for Safety. These are foods that require time and temperature control to prevent the growth of harmful microorganisms (e.g., meat, dairy, cooked rice)."
+    },
+    {
+        q: "Which of the following is a TCS food?",
+        opts: ["Dry pasta", "Sliced melons", "Uncooked rice", "Whole uncut oranges"],
+        ans: 1,
+        exp: "Sliced melons are a TCS food because cutting exposes the moist interior, which supports bacterial growth. They must be stored at 41°F (5°C) or below."
+    },
+    {
+        q: "What are the three types of food contamination?",
+        opts: ["Biological, chemical, and physical", "Hot, cold, and frozen", "Bacterial, viral, and parasitic", "Internal, external, and environmental"],
+        ans: 0,
+        exp: "The three types of contamination are biological (bacteria, viruses), chemical (cleaning products, pesticides), and physical (hair, glass, metal)."
+    },
+    {
+        q: "Who is most at risk for foodborne illness?",
+        opts: ["Teenagers and young adults", "Elderly, young children, pregnant women, and immunocompromised individuals", "Athletes", "People who eat organic food"],
+        ans: 1,
+        exp: "High-risk populations include the elderly, children under 5, pregnant women, and people with weakened immune systems. Their bodies are less able to fight off foodborne pathogens."
+    },
+    {
+        q: "Which agency is responsible for regulating most food in the United States?",
+        opts: ["The EPA", "The CDC", "The FDA", "OSHA"],
+        ans: 2,
+        exp: "The FDA (Food and Drug Administration) regulates most food products in the U.S. The USDA regulates meat, poultry, and eggs specifically."
+    },
+    {
+        q: "What is the most important way to prevent foodborne illness?",
+        opts: ["Using expensive ingredients", "Proper food handling and good personal hygiene", "Cooking all food at the same temperature", "Serving food quickly"],
+        ans: 1,
+        exp: "Proper food handling practices and good personal hygiene are the most critical factors in preventing foodborne illness."
+    },
+
+    // --- PERSONAL HYGIENE (8 questions) ---
+    {
+        q: "How long should you wash your hands for according to food safety standards?",
+        opts: ["5 seconds", "10 seconds", "At least 20 seconds", "1 minute"],
+        ans: 2,
+        exp: "Hands should be washed vigorously with soap and warm water for at least 20 seconds, then rinsed and dried with a single-use paper towel or air dryer."
+    },
+    {
+        q: "When must a food handler wash their hands?",
+        opts: ["Only before starting work", "After using the restroom, before handling food, after touching raw meat, and after sneezing", "Only after handling raw meat", "Once per shift"],
+        ans: 1,
+        exp: "Food handlers must wash hands after restroom use, before and after handling food, after touching raw proteins, after sneezing/coughing, after touching hair/face, after handling garbage, and after handling chemicals."
+    },
+    {
+        q: "A food handler has a cut on their finger. What should they do?",
+        opts: ["Continue working without any changes", "Cover it with a bandage AND wear a single-use glove", "Just put a bandage on it", "Take the day off"],
+        ans: 1,
+        exp: "Cuts and wounds must be covered with a clean bandage AND a single-use glove or finger cot to prevent contamination of food."
+    },
+    {
+        q: "When should single-use gloves be changed?",
+        opts: ["Once per hour", "Only when they tear", "Before starting a different task, after handling raw meat, and when damaged", "At the end of each shift"],
+        ans: 2,
+        exp: "Gloves must be changed when switching tasks (e.g., going from raw meat to ready-to-eat food), when they become torn or damaged, and after 4 hours of continuous use."
+    },
+    {
+        q: "What should a food handler do if they have symptoms of vomiting or diarrhea?",
+        opts: ["Wear extra gloves and continue working", "Report it to the manager and stay home", "Take medication and come to work", "Only avoid touching ready-to-eat foods"],
+        ans: 1,
+        exp: "Food handlers with symptoms of vomiting, diarrhea, jaundice, sore throat with fever, or infected wounds must report these to the manager and should be excluded or restricted from working with food."
+    },
+    {
+        q: "Which item should NOT be worn by a food handler while preparing food?",
+        opts: ["Hair restraint", "Clean apron", "Rings with stones (other than a plain band)", "Closed-toe shoes"],
+        ans: 2,
+        exp: "Jewelry with stones can harbor bacteria and can fall into food. Only a plain wedding band is generally permitted. Hair restraints, clean aprons, and closed-toe shoes are required or recommended."
+    },
+    {
+        q: "Where should food handlers wash their hands?",
+        opts: ["In the food prep sink", "In the dishwashing sink", "In a designated handwashing sink only", "Anywhere with running water"],
+        ans: 2,
+        exp: "Hands must only be washed in a designated handwashing sink. Prep sinks and dishwashing sinks must not be used for handwashing to prevent cross-contamination."
+    },
+    {
+        q: "What is the proper order of steps for handwashing?",
+        opts: ["Rinse, soap, scrub, dry", "Wet hands, apply soap, scrub for 20 seconds, rinse, dry", "Apply soap, rinse, dry", "Wet hands, rinse, scrub, dry"],
+        ans: 1,
+        exp: "The correct order is: wet hands with warm water, apply soap, scrub hands and arms for at least 20 seconds, rinse thoroughly, and dry with a single-use towel or air dryer."
+    },
+
+    // --- CROSS-CONTAMINATION & ALLERGENS (8 questions) ---
+    {
+        q: "What is cross-contamination?",
+        opts: ["Cooking food to the wrong temperature", "The transfer of harmful substances from one food or surface to another", "Mixing two types of cleaning chemicals", "Leaving food out too long"],
+        ans: 1,
+        exp: "Cross-contamination is the transfer of harmful microorganisms or allergens from one food, surface, or person to another. It is one of the leading causes of foodborne illness."
+    },
+    {
+        q: "Where should raw chicken be stored in a walk-in refrigerator?",
+        opts: ["On the top shelf above ready-to-eat food", "On the bottom shelf, below all other foods", "Next to the vegetables", "Anywhere, as long as it's wrapped"],
+        ans: 1,
+        exp: "Raw poultry must be stored on the bottom shelf to prevent its juices from dripping onto other foods. The order from top to bottom is: ready-to-eat foods, seafood, whole cuts of meat, ground meat, then poultry."
+    },
+    {
+        q: "Which of the following is one of the 'Big 8' major food allergens?",
+        opts: ["Corn", "Tomatoes", "Tree nuts", "Strawberries"],
+        ans: 2,
+        exp: "The major food allergens are: milk, eggs, fish, shellfish, tree nuts, peanuts, wheat, soybeans, and sesame (the 'Big 9' as of 2023). Corn, tomatoes, and strawberries are not in this group."
+    },
+    {
+        q: "A customer says they have a peanut allergy. What should the food handler do?",
+        opts: ["Tell them not to worry about it", "Take the allergy seriously, check ingredients, and avoid cross-contact", "Suggest they pick something without peanuts themselves", "Just remove visible peanuts from the dish"],
+        ans: 1,
+        exp: "Allergies can be life-threatening. Food handlers must take all allergy claims seriously, verify ingredients, use clean equipment to avoid cross-contact, and communicate with the kitchen."
+    },
+    {
+        q: "What is the best way to prevent cross-contamination when using cutting boards?",
+        opts: ["Use the same board but wash it between uses", "Use separate color-coded cutting boards for different food types", "Flip the cutting board over", "Only use wooden cutting boards"],
+        ans: 1,
+        exp: "Using separate, color-coded cutting boards for raw meats, vegetables, and ready-to-eat foods is the most effective way to prevent cross-contamination."
+    },
+    {
+        q: "What is cross-contact as it relates to food allergens?",
+        opts: ["The same as cross-contamination", "When an allergen is transferred from a food containing it to a food that does not", "When two people touch the same food", "When food is served past its expiration date"],
+        ans: 1,
+        exp: "Cross-contact occurs when a food allergen is unintentionally transferred to a food that does not contain that allergen. Unlike pathogens, allergens cannot be destroyed by cooking."
+    },
+    {
+        q: "Which practice helps prevent cross-contamination?",
+        opts: ["Storing raw meat above cooked food", "Using the same utensils for raw and cooked foods", "Washing, rinsing, and sanitizing surfaces between tasks", "Thawing frozen food on the counter"],
+        ans: 2,
+        exp: "Washing, rinsing, and sanitizing all food contact surfaces, equipment, and utensils between tasks is essential for preventing cross-contamination."
+    },
+    {
+        q: "Which food is safe to serve to a customer with a gluten intolerance?",
+        opts: ["Bread rolls", "Grilled chicken with steamed rice", "Pasta with marinara sauce", "Flour-dusted fried fish"],
+        ans: 1,
+        exp: "Plain grilled chicken with steamed rice is naturally gluten-free. Bread, pasta, and flour-coated items all contain wheat gluten."
+    },
+
+    // --- TIME & TEMPERATURE (8 questions) ---
+    {
+        q: "What is the temperature 'danger zone' for food?",
+        opts: ["32°F – 100°F (0°C – 38°C)", "41°F – 135°F (5°C – 57°C)", "50°F – 120°F (10°C – 49°C)", "0°F – 70°F (-18°C – 21°C)"],
+        ans: 1,
+        exp: "The danger zone is 41°F–135°F (5°C–57°C). Bacteria grow most rapidly in this range, doubling in number in as little as 20 minutes."
+    },
+    {
+        q: "What is the minimum internal cooking temperature for poultry?",
+        opts: ["145°F (63°C)", "155°F (68°C)", "165°F (74°C)", "180°F (82°C)"],
+        ans: 2,
+        exp: "All poultry (chicken, turkey, duck) must be cooked to a minimum internal temperature of 165°F (74°C) for at least 15 seconds to destroy harmful bacteria like Salmonella."
+    },
+    {
+        q: "What is the minimum internal cooking temperature for ground beef?",
+        opts: ["135°F (57°C)", "145°F (63°C)", "155°F (68°C)", "165°F (74°C)"],
+        ans: 2,
+        exp: "Ground meats (beef, pork, lamb) must be cooked to at least 155°F (68°C) for 15 seconds. Grinding exposes more surface area to bacteria."
+    },
+    {
+        q: "How quickly must food be cooled from 135°F to 70°F?",
+        opts: ["Within 30 minutes", "Within 1 hour", "Within 2 hours", "Within 4 hours"],
+        ans: 2,
+        exp: "Food must be cooled from 135°F to 70°F within 2 hours, and then from 70°F to 41°F within an additional 4 hours (6 hours total). The first stage is most critical."
+    },
+    {
+        q: "At what temperature should cold TCS food be held?",
+        opts: ["At or below 41°F (5°C)", "At or below 50°F (10°C)", "At or below 32°F (0°C)", "At or below 45°F (7°C)"],
+        ans: 0,
+        exp: "Cold TCS foods must be held at 41°F (5°C) or lower. This keeps food out of the temperature danger zone and slows bacterial growth."
+    },
+    {
+        q: "At what temperature should hot TCS food be held for service?",
+        opts: ["Above 120°F (49°C)", "At or above 135°F (57°C)", "At or above 155°F (68°C)", "At or above 165°F (74°C)"],
+        ans: 1,
+        exp: "Hot TCS foods must be held at 135°F (57°C) or above to keep them out of the temperature danger zone."
+    },
+    {
+        q: "Which is an approved method for thawing frozen food?",
+        opts: ["On the counter at room temperature", "In the refrigerator at 41°F (5°C) or lower", "In direct sunlight", "In a closed car on a warm day"],
+        ans: 1,
+        exp: "Approved thawing methods include: in the refrigerator, under running cold water, in the microwave (if cooking immediately after), or as part of the cooking process. Never thaw at room temperature."
+    },
+    {
+        q: "A food handler checks the temperature of a soup being held on a buffet and it reads 120°F. What should they do?",
+        opts: ["Nothing, that's fine for a buffet", "Reheat it to 165°F within 2 hours, then hold at 135°F or above", "Serve it quickly before it drops more", "Add more hot soup to raise the temperature"],
+        ans: 1,
+        exp: "Food that has fallen below 135°F must be reheated to 165°F for 15 seconds within 2 hours. If it cannot be reheated within 2 hours, it must be discarded."
+    },
+
+    // --- CLEANING & SANITATION (8 questions) ---
+    {
+        q: "What is the correct order for cleaning and sanitizing food contact surfaces?",
+        opts: ["Sanitize, rinse, wash", "Wash, rinse, sanitize, air dry", "Rinse, sanitize, wash, towel dry", "Wipe down, spray sanitizer"],
+        ans: 1,
+        exp: "The correct order is: scrape/remove food debris, wash with detergent, rinse with clean water, sanitize with an approved solution, and allow to air dry."
+    },
+    {
+        q: "What is the difference between cleaning and sanitizing?",
+        opts: ["They are the same thing", "Cleaning removes visible dirt and food; sanitizing reduces pathogens to safe levels", "Sanitizing removes dirt; cleaning kills bacteria", "Cleaning is for floors; sanitizing is for food surfaces"],
+        ans: 1,
+        exp: "Cleaning removes visible soil, food residue, and grease. Sanitizing reduces the number of harmful microorganisms on a surface to safe levels. Both steps are necessary."
+    },
+    {
+        q: "How should sanitizer concentration be checked?",
+        opts: ["By smelling it", "By looking at the color", "With a test kit or test strips", "It does not need to be checked"],
+        ans: 2,
+        exp: "Sanitizer concentration must be checked regularly using test strips or kits specific to the type of sanitizer (chlorine, iodine, or quaternary ammonium) to ensure it's at the right strength."
+    },
+    {
+        q: "What is the correct water temperature for a three-compartment sink when washing dishes?",
+        opts: ["Room temperature", "At least 110°F (43°C)", "At least 171°F (77°C)", "Cold water only"],
+        ans: 1,
+        exp: "The first compartment (wash) should have water at least 110°F (43°C) with detergent. The second is clean water for rinsing, and the third contains sanitizer at the proper concentration."
+    },
+    {
+        q: "Where should cleaning supplies and chemicals be stored?",
+        opts: ["Next to food items for convenience", "On shelves above food prep areas", "In a separate area, away from food and food contact surfaces", "Under the sink in the kitchen"],
+        ans: 2,
+        exp: "Cleaning chemicals must be stored in a designated area separate from food, food equipment, and utensils to prevent chemical contamination."
+    },
+    {
+        q: "How often should food contact surfaces be cleaned and sanitized?",
+        opts: ["Once a day", "Once a week", "After each use, between different food types, and at least every 4 hours during continuous use", "Only when they look dirty"],
+        ans: 2,
+        exp: "Food contact surfaces must be cleaned and sanitized after each use, when switching between different types of food (e.g., raw to ready-to-eat), when interrupted, and at least every 4 hours."
+    },
+    {
+        q: "What is the minimum concentration of chlorine sanitizer solution for food contact surfaces?",
+        opts: ["25 ppm", "50 ppm", "100 ppm", "200 ppm"],
+        ans: 1,
+        exp: "Chlorine bleach sanitizer must be at a minimum concentration of 50 ppm (parts per million) for food contact surfaces. The proper concentration must be verified with test strips."
+    },
+    {
+        q: "What should be done with food contact surfaces after sanitizing?",
+        opts: ["Rinse them with water", "Wipe them with a clean towel", "Allow them to air dry", "Apply a coat of cooking oil"],
+        ans: 2,
+        exp: "After sanitizing, food contact surfaces should be allowed to air dry. Wiping or toweling can recontaminate the surface."
+    }
+];
+
+// ============================================================
+// NJ COTTAGE FOOD LAW QUESTIONS (20)
+// ============================================================
+const njlawQuestions = [
+    {
+        q: "What certification is required to become a cottage food operator in New Jersey?",
+        opts: ["ServSafe Food Handler Certificate", "Certified Food Protection Manager (CFPM) certification", "NJ State Health Inspector License", "No certification is required"],
+        ans: 1,
+        exp: "New Jersey requires a Certified Food Protection Manager (CFPM) certification from an exam accredited by the Conference for Food Protection and the ANSI-National Accreditation Board (ANAB)."
+    },
+    {
+        q: "How much does the NJ cottage food operator permit cost?",
+        opts: ["$25", "$50", "$100", "$250"],
+        ans: 2,
+        exp: "The NJ cottage food operator permit costs $100 and must be renewed every two years."
+    },
+    {
+        q: "How often must the NJ cottage food permit be renewed?",
+        opts: ["Every year", "Every two years", "Every three years", "Every five years"],
+        ans: 1,
+        exp: "The cottage food operator permit must be renewed every two years."
+    },
+    {
+        q: "What is the annual sales limit for a cottage food operator in New Jersey?",
+        opts: ["$25,000", "$35,000", "$50,000", "$75,000"],
+        ans: 2,
+        exp: "New Jersey cottage food operators are limited to $50,000 in annual gross sales."
+    },
+    {
+        q: "Which of the following is an ALLOWED cottage food product in NJ?",
+        opts: ["Cream cheese frosted cupcakes requiring refrigeration", "Baked cookies and brownies", "Fresh salsa", "Homemade ice cream"],
+        ans: 1,
+        exp: "NJ cottage food law allows non-potentially-hazardous foods like baked goods, candies, dry mixes, jams, and preserves. Items requiring refrigeration (dairy-based fillings, fresh salsa, ice cream) are generally not allowed."
+    },
+    {
+        q: "Can a NJ cottage food operator sell their products through a retail store?",
+        opts: ["Yes, any retail store", "Yes, but only in grocery stores", "No, sales must be direct to the end consumer only", "Yes, if the store has a food license"],
+        ans: 2,
+        exp: "Cottage food operators can only sell directly to the end consumer. Wholesale, retail store sales, and selling through third-party vendors are not permitted."
+    },
+    {
+        q: "Which statement MUST appear on all NJ cottage food labels?",
+        opts: ["\"Certified Organic\"", "\"This food is prepared pursuant to N.J.A.C. 8:24-11 in a home kitchen that has not been inspected by the Department of Health\"", "\"FDA Approved\"", "\"Made in a commercial kitchen\""],
+        ans: 1,
+        exp: "NJ law requires this exact disclosure statement on every cottage food product label."
+    },
+    {
+        q: "What information must be included on an NJ cottage food product label?",
+        opts: ["Only the product name", "Product name, operator name, permit number, municipality, and required disclosure statement", "Just the ingredients list", "Only an allergy warning"],
+        ans: 1,
+        exp: "Labels must include: the common name of the product, the operator's name, business name, cottage food permit number, the municipality where it was prepared followed by 'New Jersey' or 'NJ', the allergen disclosure, and the required home kitchen statement."
+    },
+    {
+        q: "Can NJ cottage food operators ship their products to customers?",
+        opts: ["Yes, anywhere in NJ", "Yes, anywhere in the US", "No, shipping is not allowed", "Yes, but only within the same county"],
+        ans: 2,
+        exp: "NJ cottage food operators are not allowed to ship products. All sales must be made directly to the consumer, typically in person."
+    },
+    {
+        q: "Where can NJ cottage food operators sell their products?",
+        opts: ["Only from their home", "From their home, at farmers markets, fairs, and similar events", "Only at farmers markets", "Through online retailers"],
+        ans: 1,
+        exp: "Cottage food products can be sold from the operator's home, at farmers markets, fairs, farm stands, and similar direct-to-consumer venues."
+    },
+    {
+        q: "When selling at a farmers market, what must be displayed?",
+        opts: ["Nothing special is required", "Your cottage food permit and a sign with the home kitchen disclosure", "Only a price list", "A health department inspection certificate"],
+        ans: 1,
+        exp: "When selling outside the home, operators must display their cottage food permit and a sign stating the required disclosure about the food being prepared in an uninspected home kitchen."
+    },
+    {
+        q: "How long is the CFPM certification valid?",
+        opts: ["1 year", "3 years", "5 years", "It never expires"],
+        ans: 2,
+        exp: "The Certified Food Protection Manager (CFPM) certification is valid for 5 years after passing the accredited exam."
+    },
+    {
+        q: "Which of the following is NOT allowed under NJ cottage food law?",
+        opts: ["Fruit preserves and jams", "Chocolate-covered pretzels", "Custom decorated cakes with cream cheese frosting that needs refrigeration", "Dry baking mixes"],
+        ans: 2,
+        exp: "Cream cheese frosting typically requires refrigeration, making it a potentially hazardous food. Cottage food products must be non-potentially-hazardous (they must be safe at room temperature)."
+    },
+    {
+        q: "What must a cottage food operator include on their permit application?",
+        opts: ["Only their name and address", "A list of each product they will produce and the major allergens those products contain", "Just a business plan", "Photos of their kitchen"],
+        ans: 1,
+        exp: "The permit application requires a list of all products the operator will produce along with the major allergens contained in each product."
+    },
+    {
+        q: "A cottage food operator wants to sell homemade bread. Which allergen must they list?",
+        opts: ["Soy", "Tree nuts", "Wheat", "Shellfish"],
+        ans: 2,
+        exp: "Bread typically contains wheat (flour), which is one of the major food allergens that must be declared on the label."
+    },
+    {
+        q: "Can a NJ cottage food operator hire employees to help make products?",
+        opts: ["Yes, as many as they want", "No, only the permit holder and household members may prepare the food", "Yes, if they each have their own permit", "Yes, with health department approval"],
+        ans: 1,
+        exp: "Under NJ cottage food law, only the permitted operator and members of their household may be involved in preparing cottage food products."
+    },
+    {
+        q: "What type of kitchen is required for NJ cottage food operations?",
+        opts: ["A commercially licensed kitchen", "The operator's own home kitchen", "A shared community kitchen", "Any kitchen with a health permit"],
+        ans: 1,
+        exp: "NJ cottage food products must be prepared in the operator's own home kitchen. A commercial kitchen is not required, but the home kitchen is also not inspected by the health department."
+    },
+    {
+        q: "Which is an acceptable product labeling approach for cupcakes that are hard to individually label?",
+        opts: ["No label is needed for small items", "At least one tag with full labeling information must accompany the product", "A verbal disclosure is sufficient", "Just list the product name"],
+        ans: 1,
+        exp: "For items that are not easily labeled individually (like cupcakes or small chocolates), at least one tag with the complete required labeling information must be provided."
+    },
+    {
+        q: "A cottage food operator earned $48,000 in sales this year. What should they be aware of?",
+        opts: ["They've exceeded the limit and must stop selling", "They are approaching the $50,000 annual sales limit and should monitor sales carefully", "They need to get a commercial license immediately", "There is no sales limit in NJ"],
+        ans: 1,
+        exp: "The annual sales cap is $50,000. At $48,000, the operator is very close to the limit and must monitor remaining sales to avoid exceeding it."
+    },
+    {
+        q: "What happens if a cottage food operator wants to sell a new product not listed on their permit?",
+        opts: ["They can sell it immediately", "They must update their permit application to include the new product", "They need a new permit entirely", "New products are automatically allowed"],
+        ans: 1,
+        exp: "Any new product must be added to the permit by updating the application. The operator must list the product and its allergens before selling it."
+    }
+];
+
+// ============================================================
+// QUIZ ENGINE
+// ============================================================
+const quizzes = {
+    servsafe: { questions: servsafeQuestions, answers: {}, submitted: false, passRate: 0.75 },
+    njlaw: { questions: njlawQuestions, answers: {}, submitted: false, passRate: 0.75 }
+};
+
+function renderQuiz(quizId) {
+    const quiz = quizzes[quizId];
+    const container = document.getElementById('questions-' + quizId);
+    let html = '';
+    quiz.questions.forEach((q, i) => {
+        html += `<div class="question-card" id="${quizId}-q${i}">
+            <div class="q-number">Question ${i + 1} of ${quiz.questions.length}</div>
+            <div class="q-text">${q.q}</div>
+            <ul class="options" id="${quizId}-opts-${i}">
+                ${q.opts.map((opt, j) => `<li onclick="selectAnswer('${quizId}', ${i}, ${j})" id="${quizId}-opt-${i}-${j}">${opt}</li>`).join('')}
+            </ul>
+            <div class="explanation" id="${quizId}-exp-${i}">${q.exp}</div>
+        </div>`;
+    });
+    container.innerHTML = html;
+}
+
+function selectAnswer(quizId, qIdx, optIdx) {
+    const quiz = quizzes[quizId];
+    if (quiz.submitted) return;
+
+    // Clear previous selection
+    const opts = document.getElementById(`${quizId}-opts-${qIdx}`).children;
+    for (let li of opts) li.classList.remove('selected');
+
+    // Set new selection
+    document.getElementById(`${quizId}-opt-${qIdx}-${optIdx}`).classList.add('selected');
+    quiz.answers[qIdx] = optIdx;
+
+    updateProgress(quizId);
+}
+
+function updateProgress(quizId) {
+    const quiz = quizzes[quizId];
+    const total = quiz.questions.length;
+    const answered = Object.keys(quiz.answers).length;
+    const pct = (answered / total) * 100;
+
+    document.getElementById('progress-' + quizId).style.width = pct + '%';
+    document.getElementById('answered-' + quizId).textContent = `${answered} / ${total} answered`;
+
+    const stickyText = document.getElementById('sticky-text-' + quizId);
+    const submitBtn = document.getElementById('submit-' + quizId);
+
+    if (answered === total) {
+        stickyText.textContent = `All ${total} questions answered — ready to submit!`;
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+    } else {
+        stickyText.textContent = `${answered} of ${total} answered`;
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.5';
+    }
+}
+
+function submitQuiz(quizId) {
+    const quiz = quizzes[quizId];
+    if (Object.keys(quiz.answers).length < quiz.questions.length) return;
+    quiz.submitted = true;
+
+    let correct = 0;
+    quiz.questions.forEach((q, i) => {
+        const card = document.getElementById(`${quizId}-q${i}`);
+        const userAns = quiz.answers[i];
+        const opts = document.getElementById(`${quizId}-opts-${i}`).children;
+
+        // Disable all options
+        for (let li of opts) li.classList.add('disabled');
+
+        if (userAns === q.ans) {
+            correct++;
+            card.classList.add('correct');
+            opts[userAns].classList.add('correct-answer');
+        } else {
+            card.classList.add('incorrect');
+            opts[userAns].classList.add('wrong-answer');
+            opts[q.ans].classList.add('correct-answer');
+        }
+
+        // Show explanation
+        document.getElementById(`${quizId}-exp-${i}`).classList.add('show');
+    });
+
+    const total = quiz.questions.length;
+    const pct = Math.round((correct / total) * 100);
+    const passed = pct >= quiz.passRate * 100;
+
+    const scoreDiv = document.getElementById('score-' + quizId);
+    scoreDiv.innerHTML = `
+        <div class="score-label">Your Score</div>
+        <div class="score-big ${passed ? 'pass' : 'fail'}">${pct}%</div>
+        <div class="score-label">${correct} out of ${total} correct</div>
+        <div class="score-message">${passed
+            ? '🎉 You passed! Great job!'
+            : '📚 Keep studying — you need 75% to pass. Review the explanations below.'}</div>
+        <button class="btn btn-outline" onclick="resetQuiz('${quizId}')">Retake Test</button>
+    `;
+    scoreDiv.classList.add('show');
+
+    // Hide sticky submit
+    document.getElementById('sticky-' + quizId).style.display = 'none';
+
+    // Scroll to top of score
+    scoreDiv.scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz(quizId) {
+    const quiz = quizzes[quizId];
+    quiz.answers = {};
+    quiz.submitted = false;
+    document.getElementById('score-' + quizId).classList.remove('show');
+    document.getElementById('score-' + quizId).innerHTML = '';
+    renderQuiz(quizId);
+    updateProgress(quizId);
+    showStickyForTab(quizId);
+    document.getElementById('tab-' + quizId).scrollTop = 0;
+}
+
+function showStickyForTab(tabId) {
+    document.querySelectorAll('.sticky-submit').forEach(el => el.style.display = 'none');
+    const quiz = quizzes[tabId];
+    if (!quiz.submitted) {
+        document.getElementById('sticky-' + tabId).style.display = 'block';
+    }
+}
+
+let activeTab = 'servsafe';
+function switchTab(tabId) {
+    activeTab = tabId;
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    event.target.classList.add('active');
+    showStickyForTab(tabId);
+}
+
+// Initialize
+renderQuiz('servsafe');
+renderQuiz('njlaw');
+updateProgress('servsafe');
+updateProgress('njlaw');
+showStickyForTab('servsafe');
+</script>
+</body>
+</html>
