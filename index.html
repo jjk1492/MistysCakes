@@ -265,7 +265,7 @@
         <button class="btn" id="submit-njlaw" onclick="submitQuiz('njlaw')" disabled>Submit Test</button>
     </div>
 
-    <footer>Made with love for Misty's Cakes 🧁<br>Good luck on your exam!</footer>
+    <footer>Made with love for Misty's Cakes 🧁<br>Good luck on your exam!<br><span style="font-size:0.65rem;color:#ccc;">v1.1</span></footer>
 
 <script>
 // ============================================================
@@ -652,13 +652,38 @@ const njlawQuestions = [
 // ============================================================
 // QUIZ ENGINE
 // ============================================================
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function buildShuffled(sourceQuestions) {
+    const shuffled = shuffle([...sourceQuestions].map(q => {
+        // Build option objects that track original correctness
+        const options = q.opts.map((text, i) => ({ text, isCorrect: i === q.ans }));
+        shuffle(options);
+        return {
+            q: q.q,
+            opts: options.map(o => o.text),
+            ans: options.findIndex(o => o.isCorrect),
+            exp: q.exp
+        };
+    }));
+    return shuffled;
+}
+
 const quizzes = {
-    servsafe: { questions: servsafeQuestions, answers: {}, submitted: false, passRate: 0.75 },
-    njlaw: { questions: njlawQuestions, answers: {}, submitted: false, passRate: 0.75 }
+    servsafe: { source: servsafeQuestions, questions: [], answers: {}, submitted: false, passRate: 0.75 },
+    njlaw: { source: njlawQuestions, questions: [], answers: {}, submitted: false, passRate: 0.75 }
 };
 
 function renderQuiz(quizId) {
     const quiz = quizzes[quizId];
+    quiz.questions = buildShuffled(quiz.source);
     const container = document.getElementById('questions-' + quizId);
     let html = '';
     quiz.questions.forEach((q, i) => {
