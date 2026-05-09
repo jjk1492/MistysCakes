@@ -210,7 +210,7 @@
 
         footer {
             text-align: center;
-            padding: 2rem 1rem 8rem;
+            padding: 2rem 1rem 5rem;
             color: #aaa;
             font-size: 0.8rem;
         }
@@ -224,21 +224,21 @@
 <body>
     <header>
         <h1>🧁 Misty's Cakes</h1>
-        <p>Practice Tests for Food Safety &amp; NJ Cottage Food Law</p>
+        <p>Practice Tests for ServSafe Manager &amp; NJ Cottage Food Law</p>
     </header>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('servsafe')">ServSafe Food Handler</button>
+        <button class="tab-btn active" onclick="switchTab('servsafe')">ServSafe Manager</button>
         <button class="tab-btn" onclick="switchTab('njlaw')">NJ Cottage Food Law</button>
     </div>
 
-    <!-- ==================== SERVSAFE TAB ==================== -->
+    <!-- ==================== SERVSAFE MANAGER TAB ==================== -->
     <div id="tab-servsafe" class="tab-content active">
         <div class="quiz-info">
-            <h2>ServSafe Food Handler Practice Test</h2>
-            <p>40 multiple-choice questions — just like the real exam.<br>You need <strong>75% (30 out of 40)</strong> to pass.</p>
+            <h2>ServSafe Manager Practice Test</h2>
+            <p>90 multiple-choice questions — matches the real CFPM exam format.<br>You need <strong>75% (68 out of 90)</strong> to pass.<br><small>(Real exam: 80 scored + 10 unscored pilot questions, 2-hour limit)</small></p>
             <div class="progress-bar-container"><div class="progress-bar" id="progress-servsafe"></div></div>
-            <span class="badge" id="answered-servsafe">0 / 40 answered</span>
+            <span class="badge" id="answered-servsafe">0 / 90 answered</span>
         </div>
         <div class="score-section" id="score-servsafe"></div>
         <div id="questions-servsafe"></div>
@@ -257,7 +257,7 @@
     </div>
 
     <div class="sticky-submit" id="sticky-servsafe">
-        <div class="progress-text" id="sticky-text-servsafe">Answer all 40 questions to submit</div>
+        <div class="progress-text" id="sticky-text-servsafe">Answer all 90 questions to submit</div>
         <button class="btn" id="submit-servsafe" onclick="submitQuiz('servsafe')" disabled>Submit Test</button>
     </div>
     <div class="sticky-submit" id="sticky-njlaw" style="display:none;">
@@ -265,14 +265,14 @@
         <button class="btn" id="submit-njlaw" onclick="submitQuiz('njlaw')" disabled>Submit Test</button>
     </div>
 
-    <footer>Made with love for Misty's Cakes 🧁<br>Good luck on your exam!<br><span style="font-size:0.65rem;color:#ccc;">v1.3</span></footer>
+    <footer>Made with love for Misty's Cakes 🧁 v1.2<br>Good luck on your exam!</footer>
 
 <script>
 // ============================================================
-// SERVSAFE FOOD HANDLER QUESTIONS (40)
+// SERVSAFE MANAGER QUESTIONS (90)
 // ============================================================
 const servsafeQuestions = [
-    // --- BASIC FOOD SAFETY (8 questions) ---
+    // === SECTION 1: PROVIDING SAFE FOOD & FOODBORNE ILLNESS (15 questions) ===
     {
         q: "What is a foodborne illness?",
         opts: ["An illness caused by contaminated food or beverages", "A food allergy reaction", "A disease spread by airborne particles", "An illness caused by undercooked meat only"],
@@ -283,13 +283,13 @@ const servsafeQuestions = [
         q: "Which of the following is a biological hazard in food?",
         opts: ["Glass shards", "Bacteria such as Salmonella", "Cleaning chemicals", "Metal fragments"],
         ans: 1,
-        exp: "Biological hazards include bacteria (Salmonella, E. coli, Listeria), viruses (Norovirus, Hepatitis A), parasites, and fungi. Physical hazards include glass and metal; chemical hazards include cleaning products."
+        exp: "Biological hazards include bacteria (Salmonella, E. coli, Listeria), viruses (Norovirus, Hepatitis A), parasites, and fungi. Physical hazards include glass/metal; chemical hazards include cleaning products."
     },
     {
         q: "What does TCS stand for in food safety?",
         opts: ["Temperature Controlled Storage", "Time/Temperature Control for Safety", "Thermal Cooking Standards", "Total Contamination System"],
         ans: 1,
-        exp: "TCS stands for Time/Temperature Control for Safety. These are foods that require time and temperature control to prevent the growth of harmful microorganisms (e.g., meat, dairy, cooked rice)."
+        exp: "TCS stands for Time/Temperature Control for Safety. These are foods that require time and temperature control to prevent the growth of harmful microorganisms."
     },
     {
         q: "Which of the following is a TCS food?",
@@ -307,7 +307,7 @@ const servsafeQuestions = [
         q: "Who is most at risk for foodborne illness?",
         opts: ["Teenagers and young adults", "Elderly, young children, pregnant women, and immunocompromised individuals", "Athletes", "People who eat organic food"],
         ans: 1,
-        exp: "High-risk populations include the elderly, children under 5, pregnant women, and people with weakened immune systems. Their bodies are less able to fight off foodborne pathogens."
+        exp: "High-risk populations include the elderly, children under 5, pregnant women, and people with weakened immune systems."
     },
     {
         q: "Which agency is responsible for regulating most food in the United States?",
@@ -321,8 +321,50 @@ const servsafeQuestions = [
         ans: 1,
         exp: "Proper food handling practices and good personal hygiene are the most critical factors in preventing foodborne illness."
     },
+    {
+        q: "What does FAT TOM stand for?",
+        opts: ["Food, Acidity, Time, Temperature, Oxygen, Moisture", "Frozen, Acidic, Thawed, Tempered, Open, Mixed", "Fresh, Allergen, Toxic, Treated, Organic, Modified", "None of the above"],
+        ans: 0,
+        exp: "FAT TOM describes the six conditions bacteria need to grow: Food, Acidity, Time, Temperature, Oxygen, and Moisture. Controlling any of these can help prevent bacterial growth."
+    },
+    {
+        q: "Which pathogen is commonly associated with raw or undercooked poultry?",
+        opts: ["Hepatitis A", "Salmonella", "Botulism", "Staphylococcus aureus"],
+        ans: 1,
+        exp: "Salmonella is most commonly associated with raw or undercooked poultry, eggs, and meat. It is destroyed by proper cooking to 165°F (74°C) for poultry."
+    },
+    {
+        q: "Norovirus is most commonly spread by:",
+        opts: ["Contaminated poultry", "Infected food handlers who don't wash their hands", "Improperly stored canned goods", "Raw fish"],
+        ans: 1,
+        exp: "Norovirus is highly contagious and most commonly spread through the fecal-oral route by infected food handlers who fail to properly wash their hands after using the restroom."
+    },
+    {
+        q: "What is the onset time for most bacterial foodborne illnesses?",
+        opts: ["Immediately", "1 to 36 hours", "5 to 10 days", "2 to 4 weeks"],
+        ans: 1,
+        exp: "Most bacterial foodborne illnesses have an onset time of 1 to 36 hours after consuming contaminated food, though some can take longer."
+    },
+    {
+        q: "A foodborne illness outbreak occurs when:",
+        opts: ["One person gets sick from food", "Two or more people get the same illness after eating the same food", "A restaurant fails an inspection", "Food is left out for more than 1 hour"],
+        ans: 1,
+        exp: "A foodborne illness outbreak is defined as two or more people experiencing the same illness after eating the same food, confirmed by a lab analysis."
+    },
+    {
+        q: "Which is a physical contaminant?",
+        opts: ["Salmonella bacteria", "Pesticide residue", "A piece of bone in ground meat", "Mold spores"],
+        ans: 2,
+        exp: "Physical contaminants are foreign objects in food such as bones, glass, metal shavings, hair, bandages, or jewelry. They can cause injury or choking."
+    },
+    {
+        q: "E. coli O157:H7 is commonly associated with which food?",
+        opts: ["Canned vegetables", "Undercooked ground beef", "Bread", "Cooked pasta"],
+        ans: 1,
+        exp: "E. coli O157:H7 is commonly found in undercooked ground beef, contaminated produce, and unpasteurized juices or milk."
+    },
 
-    // --- PERSONAL HYGIENE (8 questions) ---
+    // === SECTION 2: PERSONAL HYGIENE (10 questions) ===
     {
         q: "How long should you wash your hands for according to food safety standards?",
         opts: ["5 seconds", "10 seconds", "At least 20 seconds", "1 minute"],
@@ -333,7 +375,7 @@ const servsafeQuestions = [
         q: "When must a food handler wash their hands?",
         opts: ["Only before starting work", "After using the restroom, before handling food, after touching raw meat, and after sneezing", "Only after handling raw meat", "Once per shift"],
         ans: 1,
-        exp: "Food handlers must wash hands after restroom use, before and after handling food, after touching raw proteins, after sneezing/coughing, after touching hair/face, after handling garbage, and after handling chemicals."
+        exp: "Food handlers must wash hands after restroom use, before/after handling food, after touching raw proteins, after sneezing/coughing, after touching hair/face, after handling garbage, and after handling chemicals."
     },
     {
         q: "A food handler has a cut on their finger. What should they do?",
@@ -345,51 +387,63 @@ const servsafeQuestions = [
         q: "When should single-use gloves be changed?",
         opts: ["Once per hour", "Only when they tear", "Before starting a different task, after handling raw meat, and when damaged", "At the end of each shift"],
         ans: 2,
-        exp: "Gloves must be changed when switching tasks (e.g., going from raw meat to ready-to-eat food), when they become torn or damaged, and after 4 hours of continuous use."
+        exp: "Gloves must be changed when switching tasks, when they become torn or damaged, after handling raw meat, and after 4 hours of continuous use."
     },
     {
         q: "What should a food handler do if they have symptoms of vomiting or diarrhea?",
         opts: ["Wear extra gloves and continue working", "Report it to the manager and stay home", "Take medication and come to work", "Only avoid touching ready-to-eat foods"],
         ans: 1,
-        exp: "Food handlers with symptoms of vomiting, diarrhea, jaundice, sore throat with fever, or infected wounds must report these to the manager and should be excluded or restricted from working with food."
+        exp: "Food handlers with vomiting, diarrhea, jaundice, sore throat with fever, or infected wounds must report to the manager and be excluded or restricted from working with food."
     },
     {
         q: "Which item should NOT be worn by a food handler while preparing food?",
         opts: ["Hair restraint", "Clean apron", "Rings with stones (other than a plain band)", "Closed-toe shoes"],
         ans: 2,
-        exp: "Jewelry with stones can harbor bacteria and can fall into food. Only a plain wedding band is generally permitted. Hair restraints, clean aprons, and closed-toe shoes are required or recommended."
+        exp: "Jewelry with stones can harbor bacteria and fall into food. Only a plain wedding band is generally permitted."
     },
     {
         q: "Where should food handlers wash their hands?",
         opts: ["In the food prep sink", "In the dishwashing sink", "In a designated handwashing sink only", "Anywhere with running water"],
         ans: 2,
-        exp: "Hands must only be washed in a designated handwashing sink. Prep sinks and dishwashing sinks must not be used for handwashing to prevent cross-contamination."
+        exp: "Hands must only be washed in a designated handwashing sink. Prep sinks and dishwashing sinks must not be used for handwashing."
     },
     {
         q: "What is the proper order of steps for handwashing?",
         opts: ["Rinse, soap, scrub, dry", "Wet hands, apply soap, scrub for 20 seconds, rinse, dry", "Apply soap, rinse, dry", "Wet hands, rinse, scrub, dry"],
         ans: 1,
-        exp: "The correct order is: wet hands with warm water, apply soap, scrub hands and arms for at least 10–15 seconds (the full process takes a minimum of 20 seconds total), rinse thoroughly, and dry with a single-use towel or air dryer."
+        exp: "Correct order: wet hands with warm water, apply soap, scrub hands and arms for at least 20 seconds, rinse thoroughly, dry with single-use towel or air dryer."
+    },
+    {
+        q: "A food handler is diagnosed with Hepatitis A. What action must be taken?",
+        opts: ["Restrict them to non-food tasks", "Exclude them from the establishment entirely", "Have them wear extra protective equipment", "Allow them to work if they feel fine"],
+        ans: 1,
+        exp: "A food handler diagnosed with Hepatitis A must be excluded from the food establishment entirely and cannot return until cleared by a medical professional and the regulatory authority."
+    },
+    {
+        q: "Which illness requires a food handler to be EXCLUDED (not just restricted) from work?",
+        opts: ["A sore throat without fever", "A minor cold", "Jaundice (yellowing of skin/eyes)", "A small cut on the arm"],
+        ans: 2,
+        exp: "Jaundice requires exclusion because it indicates possible Hepatitis A infection. The 'Big 6' pathogens requiring exclusion are: Salmonella Typhi, Nontyphoidal Salmonella, Shigella, E. coli (STEC), Hepatitis A, and Norovirus."
     },
 
-    // --- CROSS-CONTAMINATION & ALLERGENS (8 questions) ---
+    // === SECTION 3: CROSS-CONTAMINATION & ALLERGENS (10 questions) ===
     {
         q: "What is cross-contamination?",
         opts: ["Cooking food to the wrong temperature", "The transfer of harmful substances from one food or surface to another", "Mixing two types of cleaning chemicals", "Leaving food out too long"],
         ans: 1,
-        exp: "Cross-contamination is the transfer of harmful microorganisms or allergens from one food, surface, or person to another. It is one of the leading causes of foodborne illness."
+        exp: "Cross-contamination is the transfer of harmful microorganisms or allergens from one food, surface, or person to another."
     },
     {
         q: "Where should raw chicken be stored in a walk-in refrigerator?",
         opts: ["On the top shelf above ready-to-eat food", "On the bottom shelf, below all other foods", "Next to the vegetables", "Anywhere, as long as it's wrapped"],
         ans: 1,
-        exp: "Raw poultry must be stored on the bottom shelf to prevent its juices from dripping onto other foods. The order from top to bottom is: ready-to-eat foods, seafood, whole cuts of meat, ground meat, then poultry."
+        exp: "Raw poultry must be stored on the bottom shelf. The order from top to bottom is: ready-to-eat foods, seafood, whole cuts of meat, ground meat, then poultry."
     },
     {
-        q: "Which of the following is one of the major food allergens recognized by the FDA?",
+        q: "Which of the following is one of the major food allergens (Big 9)?",
         opts: ["Corn", "Tomatoes", "Tree nuts", "Strawberries"],
         ans: 2,
-        exp: "The FDA recognizes 9 major food allergens: milk, eggs, fish, shellfish, tree nuts, peanuts, wheat, soybeans, and sesame (sesame was added in 2023 under the FASTER Act). Corn, tomatoes, and strawberries are not in this group."
+        exp: "The Big 9 major food allergens are: milk, eggs, fish, shellfish, tree nuts, peanuts, wheat, soybeans, and sesame."
     },
     {
         q: "A customer says they have a peanut allergy. What should the food handler do?",
@@ -413,7 +467,13 @@ const servsafeQuestions = [
         q: "Which practice helps prevent cross-contamination?",
         opts: ["Storing raw meat above cooked food", "Using the same utensils for raw and cooked foods", "Washing, rinsing, and sanitizing surfaces between tasks", "Thawing frozen food on the counter"],
         ans: 2,
-        exp: "Washing, rinsing, and sanitizing all food contact surfaces, equipment, and utensils between tasks is essential for preventing cross-contamination."
+        exp: "Washing, rinsing, and sanitizing all food contact surfaces between tasks is essential for preventing cross-contamination."
+    },
+    {
+        q: "A food service worker prepares a meal for a guest with a shellfish allergy. What must they do?",
+        opts: ["Use a shared fryer that also cooks shrimp", "Prepare the food with clean, dedicated equipment", "Tell the guest they cannot guarantee safety", "Cook the allergen out at high heat"],
+        ans: 1,
+        exp: "Food for guests with allergies must be prepared with clean, dedicated equipment that hasn't contacted the allergen. Allergens cannot be destroyed by cooking."
     },
     {
         q: "Which food is safe to serve to a customer with a gluten intolerance?",
@@ -421,8 +481,14 @@ const servsafeQuestions = [
         ans: 1,
         exp: "Plain grilled chicken with steamed rice is naturally gluten-free. Bread, pasta, and flour-coated items all contain wheat gluten."
     },
+    {
+        q: "The correct top-to-bottom order for storing items in a refrigerator is:",
+        opts: ["Raw poultry, ground meat, whole meat, seafood, ready-to-eat", "Ready-to-eat food, seafood, whole cuts of meat, ground meat, raw poultry", "It doesn't matter as long as everything is wrapped", "Raw meats on top for easy access, produce on the bottom"],
+        ans: 1,
+        exp: "From top to bottom: ready-to-eat food, then items by minimum cooking temperature (lowest on top): seafood/whole meat (145°F), ground meat (155°F), poultry (165°F) on the bottom."
+    },
 
-    // --- TIME & TEMPERATURE (8 questions) ---
+    // === SECTION 4: TIME & TEMPERATURE CONTROL (15 questions) ===
     {
         q: "What is the temperature 'danger zone' for food?",
         opts: ["32°F – 100°F (0°C – 38°C)", "41°F – 135°F (5°C – 57°C)", "50°F – 120°F (10°C – 49°C)", "0°F – 70°F (-18°C – 21°C)"],
@@ -433,25 +499,25 @@ const servsafeQuestions = [
         q: "What is the minimum internal cooking temperature for poultry?",
         opts: ["145°F (63°C)", "155°F (68°C)", "165°F (74°C)", "180°F (82°C)"],
         ans: 2,
-        exp: "All poultry (chicken, turkey, duck) must be cooked to a minimum internal temperature of 165°F (74°C) for at least 15 seconds to destroy harmful bacteria like Salmonella."
+        exp: "All poultry must be cooked to a minimum internal temperature of 165°F (74°C) for at least 15 seconds."
     },
     {
         q: "What is the minimum internal cooking temperature for ground beef?",
         opts: ["135°F (57°C)", "145°F (63°C)", "155°F (68°C)", "165°F (74°C)"],
         ans: 2,
-        exp: "Ground meats (beef, pork, lamb) must be cooked to at least 155°F (68°C) for 17 seconds. Grinding exposes more surface area to bacteria."
+        exp: "Ground meats (beef, pork, lamb) must be cooked to at least 155°F (68°C) for 15 seconds."
     },
     {
         q: "How quickly must food be cooled from 135°F to 70°F?",
         opts: ["Within 30 minutes", "Within 1 hour", "Within 2 hours", "Within 4 hours"],
         ans: 2,
-        exp: "Food must be cooled from 135°F to 70°F within 2 hours, and then from 70°F to 41°F within an additional 4 hours (6 hours total). The first stage is most critical."
+        exp: "Food must be cooled from 135°F to 70°F within 2 hours, and then from 70°F to 41°F within an additional 4 hours (6 hours total)."
     },
     {
         q: "At what temperature should cold TCS food be held?",
         opts: ["At or below 41°F (5°C)", "At or below 50°F (10°C)", "At or below 32°F (0°C)", "At or below 45°F (7°C)"],
         ans: 0,
-        exp: "Cold TCS foods must be held at 41°F (5°C) or lower. This keeps food out of the temperature danger zone and slows bacterial growth."
+        exp: "Cold TCS foods must be held at 41°F (5°C) or lower."
     },
     {
         q: "At what temperature should hot TCS food be held for service?",
@@ -463,63 +529,365 @@ const servsafeQuestions = [
         q: "Which is an approved method for thawing frozen food?",
         opts: ["On the counter at room temperature", "In the refrigerator at 41°F (5°C) or lower", "In direct sunlight", "In a closed car on a warm day"],
         ans: 1,
-        exp: "Approved thawing methods include: in the refrigerator, under running cold water, in the microwave (if cooking immediately after), or as part of the cooking process. Never thaw at room temperature."
+        exp: "Approved thawing methods: in the refrigerator, under running cold water, in the microwave (if cooking immediately after), or as part of the cooking process."
     },
     {
-        q: "A food handler checks the temperature of a soup being held on a buffet and it reads 120°F. What should they do?",
+        q: "A food handler checks soup on a buffet and it reads 120°F. What should they do?",
         opts: ["Nothing, that's fine for a buffet", "Reheat it to 165°F within 2 hours, then hold at 135°F or above", "Serve it quickly before it drops more", "Add more hot soup to raise the temperature"],
         ans: 1,
-        exp: "Food that has fallen below 135°F must be reheated to 165°F for 15 seconds within 2 hours. If it cannot be reheated within 2 hours, it must be discarded."
+        exp: "Food that has fallen below 135°F must be reheated to 165°F for 15 seconds within 2 hours. If it cannot be reheated in time, it must be discarded."
+    },
+    {
+        q: "What is the minimum internal temperature for cooking fish?",
+        opts: ["125°F (52°C)", "135°F (57°C)", "145°F (63°C)", "155°F (68°C)"],
+        ans: 2,
+        exp: "Fish, shellfish, steaks, chops, and eggs cooked to order must reach a minimum internal temperature of 145°F (63°C) for 15 seconds."
+    },
+    {
+        q: "When reheating food for hot holding, what temperature must it reach?",
+        opts: ["135°F (57°C)", "145°F (63°C)", "155°F (68°C)", "165°F (74°C) within 2 hours"],
+        ans: 3,
+        exp: "Food being reheated for hot holding must reach 165°F (74°C) for 15 seconds within 2 hours. Food that doesn't reach this temperature in time must be discarded."
+    },
+    {
+        q: "What temperature must a refrigerator maintain to safely store TCS foods?",
+        opts: ["45°F (7°C) or lower", "41°F (5°C) or lower", "38°F (3°C) or lower", "32°F (0°C) or lower"],
+        ans: 1,
+        exp: "Refrigerators must maintain a temperature of 41°F (5°C) or lower to keep TCS foods safe."
+    },
+    {
+        q: "A thermometer should be inserted into which part of the food to get an accurate reading?",
+        opts: ["The surface", "The thinnest part", "The thickest part of the food", "Near the bone"],
+        ans: 2,
+        exp: "To get an accurate temperature reading, insert the thermometer into the thickest part of the food, away from bone, fat, or gristle."
+    },
+    {
+        q: "How long can TCS food be held in the temperature danger zone before it must be discarded?",
+        opts: ["2 hours", "4 hours total", "6 hours", "8 hours"],
+        ans: 1,
+        exp: "Under the 4-hour rule, TCS food can be held without temperature control for a maximum of 4 hours, after which it must be served, sold, or discarded."
+    },
+    {
+        q: "What minimum temperature must food being cooked in a microwave reach?",
+        opts: ["145°F (63°C)", "155°F (68°C)", "165°F (74°C)", "165°F (74°C), then let stand covered for 2 minutes"],
+        ans: 3,
+        exp: "Food cooked in a microwave must reach 165°F (74°C) and then be allowed to stand covered for 2 minutes to allow heat to distribute evenly."
+    },
+    {
+        q: "Which type of thermometer is most accurate for checking food temperatures?",
+        opts: ["Infrared/laser thermometer", "Bimetallic stemmed thermometer", "Thermocouple or thermistor", "Oven thermometer"],
+        ans: 2,
+        exp: "Thermocouples and thermistors are the most accurate and fastest food thermometers. Infrared thermometers only measure surface temperature, not internal temperature."
     },
 
-    // --- CLEANING & SANITATION (8 questions) ---
+    // === SECTION 5: CLEANING & SANITATION (10 questions) ===
     {
         q: "What is the correct order for cleaning and sanitizing food contact surfaces?",
         opts: ["Sanitize, rinse, wash", "Wash, rinse, sanitize, air dry", "Rinse, sanitize, wash, towel dry", "Wipe down, spray sanitizer"],
         ans: 1,
-        exp: "The correct order is: scrape/remove food debris, wash with detergent, rinse with clean water, sanitize with an approved solution, and allow to air dry."
+        exp: "Correct order: scrape/remove food debris, wash with detergent, rinse with clean water, sanitize with approved solution, and air dry."
     },
     {
         q: "What is the difference between cleaning and sanitizing?",
         opts: ["They are the same thing", "Cleaning removes visible dirt and food; sanitizing reduces pathogens to safe levels", "Sanitizing removes dirt; cleaning kills bacteria", "Cleaning is for floors; sanitizing is for food surfaces"],
         ans: 1,
-        exp: "Cleaning removes visible soil, food residue, and grease. Sanitizing reduces the number of harmful microorganisms on a surface to safe levels. Both steps are necessary."
+        exp: "Cleaning removes visible soil and grease. Sanitizing reduces harmful microorganisms to safe levels. Both steps are necessary."
     },
     {
         q: "How should sanitizer concentration be checked?",
         opts: ["By smelling it", "By looking at the color", "With a test kit or test strips", "It does not need to be checked"],
         ans: 2,
-        exp: "Sanitizer concentration must be checked regularly using test strips or kits specific to the type of sanitizer (chlorine, iodine, or quaternary ammonium) to ensure it's at the right strength."
+        exp: "Sanitizer concentration must be checked regularly using test strips or kits specific to the sanitizer type (chlorine, iodine, or quaternary ammonium)."
     },
     {
-        q: "What is the correct water temperature for a three-compartment sink when washing dishes?",
+        q: "What is the correct water temperature for the wash compartment of a three-compartment sink?",
         opts: ["Room temperature", "At least 110°F (43°C)", "At least 171°F (77°C)", "Cold water only"],
         ans: 1,
-        exp: "The first compartment (wash) should have water at least 110°F (43°C) with detergent. The second is clean water for rinsing, and the third contains sanitizer at the proper concentration."
+        exp: "The first compartment (wash) should have water at least 110°F (43°C) with detergent."
     },
     {
         q: "Where should cleaning supplies and chemicals be stored?",
-        opts: ["Next to food items for convenience", "On shelves above food prep areas", "In a separate area, away from food and food contact surfaces", "Under the sink in the kitchen"],
+        opts: ["Next to food items for convenience", "On shelves above food prep areas", "In a separate area, away from food and food contact surfaces", "Under the food prep sink"],
         ans: 2,
         exp: "Cleaning chemicals must be stored in a designated area separate from food, food equipment, and utensils to prevent chemical contamination."
     },
     {
         q: "How often should food contact surfaces be cleaned and sanitized?",
-        opts: ["Once a day", "Once a week", "After each use, between different food types, and at least every 4 hours during continuous use", "Only when they look dirty"],
+        opts: ["Once a day", "Once a week", "After each use, between different food types, and at least every 4 hours", "Only when they look dirty"],
         ans: 2,
-        exp: "Food contact surfaces must be cleaned and sanitized after each use, when switching between different types of food (e.g., raw to ready-to-eat), when interrupted, and at least every 4 hours."
+        exp: "Food contact surfaces must be cleaned and sanitized after each use, when switching between food types, and at least every 4 hours during continuous use."
     },
     {
-        q: "What is the minimum concentration of chlorine sanitizer solution for food contact surfaces?",
+        q: "What is the minimum concentration of chlorine sanitizer for food contact surfaces?",
         opts: ["25 ppm", "50 ppm", "100 ppm", "200 ppm"],
         ans: 1,
-        exp: "Chlorine bleach sanitizer must be at a minimum concentration of 50 ppm (parts per million) for food contact surfaces. The proper concentration must be verified with test strips."
+        exp: "Chlorine bleach sanitizer must be at a minimum of 50 ppm for food contact surfaces. Concentration must be verified with test strips."
     },
     {
         q: "What should be done with food contact surfaces after sanitizing?",
         opts: ["Rinse them with water", "Wipe them with a clean towel", "Allow them to air dry", "Apply a coat of cooking oil"],
         ans: 2,
-        exp: "After sanitizing, food contact surfaces should be allowed to air dry. Wiping or toweling can recontaminate the surface."
+        exp: "After sanitizing, surfaces should air dry. Wiping or toweling can recontaminate the surface."
+    },
+    {
+        q: "What is the minimum water temperature for the final sanitizing rinse in a high-temperature dishwasher?",
+        opts: ["135°F (57°C)", "150°F (66°C)", "171°F (77°C)", "180°F (82°C)"],
+        ans: 3,
+        exp: "High-temperature dishwashers must have a final sanitizing rinse of at least 180°F (82°C) for dishes, or 165°F (74°C) for stationary-rack machines."
+    },
+    {
+        q: "Wiping cloths used for cleaning food contact surfaces during service should be stored:",
+        opts: ["In an apron pocket", "On the counter between uses", "In a sanitizer solution between uses", "In a dry location away from food"],
+        ans: 2,
+        exp: "Wiping cloths must be stored in a sanitizer solution at the correct concentration between uses to prevent them from becoming a source of contamination."
+    },
+
+    // === SECTION 6: FOOD PURCHASING, RECEIVING & STORAGE (10 questions) ===
+    {
+        q: "What is the most important factor when choosing a food supplier?",
+        opts: ["The lowest price", "That they are an approved, reputable supplier who meets food safety standards", "That they deliver the fastest", "That they offer the widest selection"],
+        ans: 1,
+        exp: "Food must only be purchased from approved, reputable suppliers who have been inspected and meet local, state, and federal food safety requirements."
+    },
+    {
+        q: "At what temperature should cold TCS food be received?",
+        opts: ["50°F (10°C) or lower", "45°F (7°C) or lower", "41°F (5°C) or lower", "38°F (3°C) or lower"],
+        ans: 2,
+        exp: "Cold TCS food must be received at 41°F (5°C) or lower. Any delivery that arrives above this temperature should be rejected."
+    },
+    {
+        q: "Which of the following is a reason to reject a food delivery?",
+        opts: ["The delivery arrived 10 minutes early", "Frozen food shows signs of thawing and refreezing (ice crystals on packaging)", "The boxes are slightly dusty", "The driver is not wearing a uniform"],
+        ans: 1,
+        exp: "Signs of thawing and refreezing (large ice crystals, frozen liquids at bottom of packaging) indicate the food was not kept at proper temperatures and should be rejected."
+    },
+    {
+        q: "What does FIFO stand for in food storage?",
+        opts: ["First In, First Out", "Frozen Items, Fresh Only", "Food Inspection for Operations", "Fast Inventory, Fresh Output"],
+        ans: 0,
+        exp: "FIFO (First In, First Out) means older products should be used before newer ones. New deliveries go behind existing stock to ensure proper rotation."
+    },
+    {
+        q: "How far from the floor should food be stored?",
+        opts: ["At least 2 inches", "At least 6 inches", "At least 12 inches", "Directly on the floor is fine if it's clean"],
+        ans: 1,
+        exp: "All food must be stored at least 6 inches off the floor to protect it from contamination and allow for cleaning underneath."
+    },
+    {
+        q: "When receiving a shipment of fresh fish, what should the internal temperature be?",
+        opts: ["45°F (7°C) or lower", "41°F (5°C) or lower", "32°F (0°C) or lower", "Any temperature if it smells fresh"],
+        ans: 1,
+        exp: "Fresh fish should be received at 41°F (5°C) or lower. It should also have clear eyes, firm flesh, mild ocean smell, and red gills."
+    },
+    {
+        q: "Food items stored in a walk-in cooler must be:",
+        opts: ["Covered or wrapped, labeled, and dated", "Left uncovered so they cool faster", "Stored directly on the floor if in sealed containers", "Placed anywhere there is room"],
+        ans: 0,
+        exp: "All food in storage must be covered or wrapped to prevent contamination, labeled with contents, and date-marked if it will be held for more than 24 hours."
+    },
+    {
+        q: "Ready-to-eat TCS food prepared on-site must be consumed or discarded within how many days if held at 41°F?",
+        opts: ["3 days", "5 days", "7 days (day of preparation = day 1)", "10 days"],
+        ans: 2,
+        exp: "Ready-to-eat TCS food prepared in-house can be stored for a maximum of 7 days at 41°F (5°C) or lower. The day of preparation counts as day 1."
+    },
+    {
+        q: "Canned goods should be rejected during receiving if:",
+        opts: ["The label is slightly torn", "The cans are dented on the seam, swollen, or leaking", "They were delivered in a cardboard box", "The brand is unfamiliar"],
+        ans: 1,
+        exp: "Cans that are dented on the seam or rim, swollen, leaking, or have no label must be rejected as they may contain Clostridium botulinum or be compromised."
+    },
+    {
+        q: "Where should raw meat be stored relative to produce in a refrigerator?",
+        opts: ["Above the produce", "Below the produce", "Next to the produce", "It doesn't matter if both are wrapped"],
+        ans: 1,
+        exp: "Raw meat must always be stored below produce and ready-to-eat foods to prevent juices from dripping down and causing cross-contamination."
+    },
+
+    // === SECTION 7: FOOD PREPARATION & SERVICE (10 questions) ===
+    {
+        q: "When preparing food, what is the maximum time TCS food can remain in the danger zone during preparation?",
+        opts: ["1 hour", "2 hours", "4 hours cumulative", "No limit during active preparation"],
+        ans: 2,
+        exp: "TCS food should not be in the danger zone for more than 4 hours total (cumulative time). This includes all time during receiving, storage, preparation, cooking, and serving."
+    },
+    {
+        q: "Which cooling method is NOT acceptable?",
+        opts: ["Placing food in an ice bath", "Using a blast chiller", "Leaving a large pot of hot soup at room temperature to cool on its own", "Dividing food into smaller, shallow containers"],
+        ans: 2,
+        exp: "Leaving a large pot of hot food at room temperature cools too slowly, allowing bacteria to grow. Acceptable methods include ice baths, blast chillers, shallow pans, and ice paddles."
+    },
+    {
+        q: "What is the minimum internal temperature for cooking eggs that will be served immediately?",
+        opts: ["135°F (57°C)", "145°F (63°C)", "155°F (68°C)", "165°F (74°C)"],
+        ans: 1,
+        exp: "Eggs cooked for immediate service must reach 145°F (63°C) for 15 seconds. Eggs for high-risk populations must be cooked to 155°F (68°C)."
+    },
+    {
+        q: "Bare-hand contact with ready-to-eat food is:",
+        opts: ["Acceptable if hands were just washed", "Never acceptable; use gloves, tongs, or deli tissue", "Acceptable for bread only", "Acceptable for the manager only"],
+        ans: 1,
+        exp: "Ready-to-eat food should never be touched with bare hands. Always use single-use gloves, tongs, scoops, deli tissue, or other utensils."
+    },
+    {
+        q: "When serving food on a buffet, utensils should be replaced or cleaned every:",
+        opts: ["30 minutes", "1 hour", "4 hours or when contaminated", "Only at the end of service"],
+        ans: 2,
+        exp: "Serving utensils on a buffet should be replaced or cleaned at least every 4 hours, or sooner if contaminated or dropped."
+    },
+    {
+        q: "What is the proper way to cool a large batch of hot soup?",
+        opts: ["Put the entire pot in the refrigerator", "Divide into shallow pans no more than 4 inches deep and use an ice bath", "Leave it on the counter with the lid off", "Add cold water directly to the soup"],
+        ans: 1,
+        exp: "Large batches should be divided into shallow pans (no more than 4 inches deep) and placed in an ice bath or blast chiller. This increases surface area for faster cooling."
+    },
+    {
+        q: "During service, how should you check if hot held food is at the correct temperature?",
+        opts: ["Touch it with your hand", "Use an infrared thermometer on the surface", "Insert a calibrated probe thermometer into the thickest part", "Check if it's steaming"],
+        ans: 2,
+        exp: "A calibrated probe thermometer inserted into the thickest part gives the most accurate reading. Steam and surface readings are not reliable indicators of internal temperature."
+    },
+    {
+        q: "How should ice used for cooling food or drinks be handled?",
+        opts: ["Scoop it with a glass", "Use a dedicated ice scoop with a handle", "Grab it with bare hands", "Use the same container that held raw meat"],
+        ans: 1,
+        exp: "Ice must be scooped with a dedicated ice scoop that has a handle. Never use hands, glasses, or containers that could contaminate the ice."
+    },
+    {
+        q: "A food handler accidentally drops a serving spoon on the floor. What should they do?",
+        opts: ["Wipe it off and continue using it", "Rinse it under hot water and continue", "Remove it from service, wash, rinse, and sanitize it", "Use it only for non-TCS foods"],
+        ans: 2,
+        exp: "Any utensil that touches the floor must be removed from service and properly washed, rinsed, and sanitized before being used again."
+    },
+    {
+        q: "When must you calibrate a food thermometer?",
+        opts: ["Only when you buy it", "Before each shift, after being dropped, and after extreme temperature changes", "Once a year", "Only when readings seem wrong"],
+        ans: 1,
+        exp: "Thermometers should be calibrated regularly: before each shift, after being dropped, after measuring extreme temperatures, and whenever accuracy is in question."
+    },
+
+    // === SECTION 8: HACCP & FOOD SAFETY MANAGEMENT (10 questions) ===
+    {
+        q: "What does HACCP stand for?",
+        opts: ["Hazard Analysis Critical Control Point", "Health And Contamination Control Program", "Hygienic Assessment of Chemical Control Points", "Handling And Cooking Control Procedures"],
+        ans: 0,
+        exp: "HACCP stands for Hazard Analysis Critical Control Point. It is a preventive food safety management system that identifies, evaluates, and controls hazards."
+    },
+    {
+        q: "How many principles are in a HACCP plan?",
+        opts: ["3", "5", "7", "10"],
+        ans: 2,
+        exp: "HACCP has 7 principles: (1) Conduct hazard analysis, (2) Determine CCPs, (3) Establish critical limits, (4) Establish monitoring procedures, (5) Identify corrective actions, (6) Verify the system works, (7) Establish record-keeping."
+    },
+    {
+        q: "What is a Critical Control Point (CCP)?",
+        opts: ["Any point in the process where food is handled", "A point where a food safety hazard can be prevented, eliminated, or reduced to acceptable levels", "The temperature of the refrigerator", "The point where food is served to the customer"],
+        ans: 1,
+        exp: "A CCP is a specific point in the food flow where a hazard can be prevented, eliminated, or reduced to an acceptable level. Example: cooking poultry to 165°F."
+    },
+    {
+        q: "What is a critical limit in a HACCP plan?",
+        opts: ["The maximum number of customers allowed", "The minimum or maximum value a CCP must meet to prevent a hazard", "The number of employees needed", "The maximum hours food can be stored"],
+        ans: 1,
+        exp: "A critical limit is the minimum or maximum measurement (such as temperature or time) that must be met at a CCP to prevent or reduce a hazard to an acceptable level."
+    },
+    {
+        q: "What is 'active managerial control'?",
+        opts: ["Hiring more managers", "A manager actively monitoring and controlling food safety risks in the operation", "Letting health inspectors manage the kitchen", "Using automated cooking equipment"],
+        ans: 1,
+        exp: "Active managerial control means the manager takes a proactive role in controlling food safety risks through monitoring, training, corrective actions, and verification."
+    },
+    {
+        q: "A corrective action in a HACCP plan is:",
+        opts: ["Firing the employee who made the mistake", "A predetermined step taken when a critical limit is not met", "Calling the health inspector", "Closing the restaurant for the day"],
+        ans: 1,
+        exp: "A corrective action is a predetermined procedure that must be followed when monitoring shows a critical limit has not been met (e.g., discarding food that didn't reach proper temperature)."
+    },
+    {
+        q: "Which of the following is an example of a CCP in a restaurant?",
+        opts: ["Ordering food from a supplier", "Receiving food at the loading dock", "Cooking chicken to 165°F internal temperature", "Sweeping the floor after service"],
+        ans: 2,
+        exp: "Cooking chicken to 165°F is a CCP because it's the point where the biological hazard (Salmonella, etc.) is eliminated. It has a measurable critical limit."
+    },
+    {
+        q: "What is food defense?",
+        opts: ["Protecting food from unintentional contamination", "Protecting food from intentional contamination or tampering", "Using food covers on a buffet", "Having a security guard at the restaurant"],
+        ans: 1,
+        exp: "Food defense refers to protecting food from deliberate, intentional contamination or tampering by people who want to cause harm (bioterrorism, sabotage, etc.)."
+    },
+    {
+        q: "Which is an example of a food defense measure?",
+        opts: ["Washing hands before handling food", "Restricting access to food storage and prep areas", "Cooking food to proper temperatures", "Using FIFO rotation"],
+        ans: 1,
+        exp: "Food defense measures include restricting access, monitoring who enters food areas, securing chemicals, and watching for signs of tampering. The others are food safety measures."
+    },
+    {
+        q: "A manager notices a monitoring log shows a CCP was not met yesterday. What should happen?",
+        opts: ["Ignore it since no one got sick", "Review the corrective action taken, verify the system, and ensure proper documentation", "Throw away all food in the restaurant", "Call the health department immediately"],
+        ans: 1,
+        exp: "When a CCP is not met, the manager should verify the corrective action was properly taken, review records, determine why the deviation occurred, and ensure the system is working."
+    },
+
+    // === SECTION 9: FACILITY, PEST CONTROL & REGULATORY (10 questions) ===
+    {
+        q: "What is Integrated Pest Management (IPM)?",
+        opts: ["Using the strongest pesticides available", "A program that combines prevention, monitoring, and targeted pest control", "Calling an exterminator once a month", "Keeping a cat in the kitchen"],
+        ans: 1,
+        exp: "IPM is a comprehensive approach combining prevention (exclusion, sanitation), monitoring (regular inspections), and targeted control methods to manage pests effectively and safely."
+    },
+    {
+        q: "Which of the following is a sign of a cockroach infestation?",
+        opts: ["Small droppings that look like black pepper or coffee grounds", "Paw prints on surfaces", "Holes chewed in walls", "Cobwebs in corners"],
+        ans: 0,
+        exp: "Cockroach signs include pepper-like droppings, a strong oily/musty odor, egg cases (oothecae), and the insects themselves (often seen at night). Holes in walls indicate rodents."
+    },
+    {
+        q: "Who is allowed to apply chemical pesticides in a food service establishment?",
+        opts: ["Any food handler", "The manager on duty", "Only a licensed Pest Control Operator (PCO)", "Any employee who reads the label"],
+        ans: 2,
+        exp: "Only a licensed Pest Control Operator (PCO) should apply pesticides in a food establishment. Staff can take preventive measures like sealing cracks and eliminating harborage."
+    },
+    {
+        q: "What should an operator do to help prevent pests from entering the establishment?",
+        opts: ["Leave doors propped open for ventilation", "Seal cracks and gaps in walls, install air curtains, and keep areas clean", "Store food on the floor to make it easier to clean around", "Use open garbage containers for convenience"],
+        ans: 1,
+        exp: "Prevention includes sealing entry points, installing air curtains or self-closing doors, maintaining cleanliness, storing food properly, and eliminating standing water."
+    },
+    {
+        q: "What is the primary purpose of ventilation systems in a food service kitchen?",
+        opts: ["To keep employees cool", "To remove grease, smoke, heat, and odors, and provide fresh air", "To prevent pest entry only", "To reduce noise levels"],
+        ans: 1,
+        exp: "Ventilation systems remove grease-laden vapors, smoke, heat, steam, and odors from the kitchen while providing clean air exchange. They must be cleaned regularly."
+    },
+    {
+        q: "Which floor material is most appropriate for a food service kitchen?",
+        opts: ["Carpet", "Smooth, nonabsorbent, and easy-to-clean material like sealed concrete or quarry tile", "Hardwood", "Laminate"],
+        ans: 1,
+        exp: "Kitchen floors must be smooth, durable, nonabsorbent, and easy to clean. Quarry tile and sealed concrete are common choices. Carpet and wood are not appropriate for food prep areas."
+    },
+    {
+        q: "How should a grease trap be maintained?",
+        opts: ["Never — they are self-cleaning", "Cleaned on a regular schedule to prevent backup and odor", "Only when it completely overflows", "Replaced monthly"],
+        ans: 1,
+        exp: "Grease traps must be cleaned on a regular schedule to prevent grease buildup, backups, foul odors, and potential contamination of the plumbing system."
+    },
+    {
+        q: "During a health inspection, which violation would likely result in an immediate closure?",
+        opts: ["A slightly dirty floor", "A missing thermometer", "Sewage backing up into the kitchen", "A burned-out light bulb"],
+        ans: 2,
+        exp: "Sewage backup is an imminent health hazard that typically results in immediate closure. Other critical violations may allow time for correction."
+    },
+    {
+        q: "What is the correct way to handle a rodent problem?",
+        opts: ["Set traps yourself using rat poison near food areas", "Contact a licensed PCO and eliminate food/water/shelter sources", "Ignore it if you only see one mouse", "Spread poison around the perimeter of the building"],
+        ans: 1,
+        exp: "Contact a licensed PCO for professional treatment, and eliminate conditions that attract rodents: seal entry points, remove food sources, eliminate water sources, and reduce clutter."
+    },
+    {
+        q: "A food manager's responsibility regarding regulatory inspections includes:",
+        opts: ["Hiding violations before the inspector arrives", "Cooperating with inspectors, providing access, and correcting violations promptly", "Arguing against every finding", "Only fixing violations that result in fines"],
+        ans: 1,
+        exp: "Managers must cooperate with inspectors, provide access to all areas, answer questions honestly, and take corrective action on violations in a timely manner."
     }
 ];
 
@@ -555,7 +923,7 @@ const njlawQuestions = [
         q: "Which of the following is an ALLOWED cottage food product in NJ?",
         opts: ["Cream cheese frosted cupcakes requiring refrigeration", "Baked cookies and brownies", "Fresh salsa", "Homemade ice cream"],
         ans: 1,
-        exp: "NJ cottage food law allows non-potentially-hazardous foods like baked goods, candies, dry mixes, jams, and preserves. Items requiring refrigeration (dairy-based fillings, fresh salsa, ice cream) are generally not allowed."
+        exp: "NJ cottage food law allows non-potentially-hazardous foods like baked goods, candies, dry mixes, jams, and preserves. Items requiring refrigeration are generally not allowed."
     },
     {
         q: "Can a NJ cottage food operator sell their products through a retail store?",
@@ -573,7 +941,7 @@ const njlawQuestions = [
         q: "What information must be included on an NJ cottage food product label?",
         opts: ["Only the product name", "Product name, operator name, permit number, municipality, and required disclosure statement", "Just the ingredients list", "Only an allergy warning"],
         ans: 1,
-        exp: "Labels must include: the common name of the product, the operator's name, business name, cottage food permit number, the municipality where it was prepared followed by 'New Jersey' or 'NJ', the allergen disclosure, and the required home kitchen statement."
+        exp: "Labels must include: common name of the product, operator's name, business name, cottage food permit number, municipality followed by 'New Jersey' or 'NJ', allergen disclosure, and the required home kitchen statement."
     },
     {
         q: "Can NJ cottage food operators ship their products to customers?",
@@ -603,7 +971,7 @@ const njlawQuestions = [
         q: "Which of the following is NOT allowed under NJ cottage food law?",
         opts: ["Fruit preserves and jams", "Chocolate-covered pretzels", "Custom decorated cakes with cream cheese frosting that needs refrigeration", "Dry baking mixes"],
         ans: 2,
-        exp: "Cream cheese frosting typically requires refrigeration, making it a potentially hazardous food. Cottage food products must be non-potentially-hazardous (they must be safe at room temperature)."
+        exp: "Cream cheese frosting typically requires refrigeration, making it a potentially hazardous food. Cottage food products must be safe at room temperature."
     },
     {
         q: "What must a cottage food operator include on their permit application?",
@@ -627,13 +995,13 @@ const njlawQuestions = [
         q: "What type of kitchen is required for NJ cottage food operations?",
         opts: ["A commercially licensed kitchen", "The operator's own home kitchen", "A shared community kitchen", "Any kitchen with a health permit"],
         ans: 1,
-        exp: "NJ cottage food products must be prepared in the operator's own home kitchen. A commercial kitchen is not required, but the home kitchen is also not inspected by the health department."
+        exp: "NJ cottage food products must be prepared in the operator's own home kitchen. A commercial kitchen is not required, but the home kitchen is not inspected by the health department."
     },
     {
         q: "Which is an acceptable product labeling approach for cupcakes that are hard to individually label?",
         opts: ["No label is needed for small items", "At least one tag with full labeling information must accompany the product", "A verbal disclosure is sufficient", "Just list the product name"],
         ans: 1,
-        exp: "For items that are not easily labeled individually (like cupcakes or small chocolates), at least one tag with the complete required labeling information must be provided."
+        exp: "For items not easily labeled individually (like cupcakes or small chocolates), at least one tag with the complete required labeling information must be provided."
     },
     {
         q: "A cottage food operator earned $48,000 in sales this year. What should they be aware of?",
@@ -652,38 +1020,13 @@ const njlawQuestions = [
 // ============================================================
 // QUIZ ENGINE
 // ============================================================
-
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
-function buildShuffled(sourceQuestions) {
-    const shuffled = shuffle([...sourceQuestions].map(q => {
-        // Build option objects that track original correctness
-        const options = q.opts.map((text, i) => ({ text, isCorrect: i === q.ans }));
-        shuffle(options);
-        return {
-            q: q.q,
-            opts: options.map(o => o.text),
-            ans: options.findIndex(o => o.isCorrect),
-            exp: q.exp
-        };
-    }));
-    return shuffled;
-}
-
 const quizzes = {
-    servsafe: { source: servsafeQuestions, questions: [], answers: {}, submitted: false, passRate: 0.75 },
-    njlaw: { source: njlawQuestions, questions: [], answers: {}, submitted: false, passRate: 0.75 }
+    servsafe: { questions: servsafeQuestions, answers: {}, submitted: false, passRate: 0.75 },
+    njlaw: { questions: njlawQuestions, answers: {}, submitted: false, passRate: 0.75 }
 };
 
 function renderQuiz(quizId) {
     const quiz = quizzes[quizId];
-    quiz.questions = buildShuffled(quiz.source);
     const container = document.getElementById('questions-' + quizId);
     let html = '';
     quiz.questions.forEach((q, i) => {
@@ -703,11 +1046,9 @@ function selectAnswer(quizId, qIdx, optIdx) {
     const quiz = quizzes[quizId];
     if (quiz.submitted) return;
 
-    // Clear previous selection
     const opts = document.getElementById(`${quizId}-opts-${qIdx}`).children;
     for (let li of opts) li.classList.remove('selected');
 
-    // Set new selection
     document.getElementById(`${quizId}-opt-${qIdx}-${optIdx}`).classList.add('selected');
     quiz.answers[qIdx] = optIdx;
 
@@ -748,7 +1089,6 @@ function submitQuiz(quizId) {
         const userAns = quiz.answers[i];
         const opts = document.getElementById(`${quizId}-opts-${i}`).children;
 
-        // Disable all options
         for (let li of opts) li.classList.add('disabled');
 
         if (userAns === q.ans) {
@@ -761,7 +1101,6 @@ function submitQuiz(quizId) {
             opts[q.ans].classList.add('correct-answer');
         }
 
-        // Show explanation
         document.getElementById(`${quizId}-exp-${i}`).classList.add('show');
     });
 
@@ -781,10 +1120,7 @@ function submitQuiz(quizId) {
     `;
     scoreDiv.classList.add('show');
 
-    // Hide sticky submit
     document.getElementById('sticky-' + quizId).style.display = 'none';
-
-    // Scroll to top of score
     scoreDiv.scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -797,7 +1133,6 @@ function resetQuiz(quizId) {
     renderQuiz(quizId);
     updateProgress(quizId);
     showStickyForTab(quizId);
-    document.getElementById('tab-' + quizId).scrollTop = 0;
 }
 
 function showStickyForTab(tabId) {
